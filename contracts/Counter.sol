@@ -1,10 +1,10 @@
 pragma solidity ^0.4.4;
 
 contract Counter {
-    address creator;
+    address public creator;
     uint counter;
 
-    function Incrementer() public
+    function Counter() public
     {
         creator = msg.sender; 
         counter = 0;
@@ -20,8 +20,6 @@ contract Counter {
         return counter;
     }
 
-    // Kills this contract and sends remaining funds back to creator.
-    //
     function kill() public
     { 
         if (msg.sender == creator)
