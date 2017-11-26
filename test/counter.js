@@ -29,22 +29,19 @@ contract('Counter', function(accounts) {
   	Counter.new({ from: web3.eth.accounts[0] }).then(
   		function(instance) {
   			counter = instance;
-  			
+
   			counter.increment.sendTransaction()
-  			counter.get.call().then(
-  				function(count) {
-  					assert.equal(count, 1, "Counter should have been incremented to one!");
-  					done()
-  				}
-  				)
-  			// counter.increment.sendTransaction()
-  			// counter.get.call().then(
-  			// 	function(count) {
-  			// 		assert.equal(count, 1, "Counter should have been incremented to one!");
-  			// 	}
-  			// 	)
-  			// done()
-  		}
-  		)
+  			return counter.get.call()
+  		}).then(
+  		function(count) {
+  			assert.equal(count, 1, "Counter should have been incremented to one!");
+
+  			counter.increment.sendTransaction()
+  			return counter.get.call()
+  		}).then(
+  		function(count) {
+  			assert.equal(count, 2, "Counter should have been incremented to two!");
+  			done()
+  		})
   });
 });
