@@ -15,6 +15,16 @@ contract Counter {
         counter = counter + 1;
     }
 
+    modifier onlyCreator() {
+        require(msg.sender == creator);
+        _;
+    } 
+
+    function set(uint value) onlyCreator public
+    {
+        counter = value;
+    }
+
     function get() public constant returns (uint)
     {
         return counter;
