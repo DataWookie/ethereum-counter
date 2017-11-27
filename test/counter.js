@@ -24,23 +24,48 @@ contract('Counter', function(accounts) {
   		)
   });
   it("Increment counter.", function(done) {
+  	// Create a variable in this scope so that the contract is visible in all then() blocks. Initialise below.
   	var counter;
 
   	Counter.new({ from: web3.eth.accounts[0] }).then(
   		function(instance) {
   			counter = instance;
 
-  			counter.increment.sendTransaction()
-  			return counter.get.call()
+  			return counter.increment()
+  		}).then(
+  		function() {
+  			return counter.get.call()  			
   		}).then(
   		function(count) {
   			assert.equal(count, 1, "Counter should have been incremented to one!");
 
-  			counter.increment.sendTransaction()
+  			return counter.increment()
+  		}).then(
+  		function() {
   			return counter.get.call()
   		}).then(
   		function(count) {
   			assert.equal(count, 2, "Counter should have been incremented to two!");
+  			done()
+  		})
+  });
+  it("Reset counter.", function(done) {
+  	var counter;
+
+  	Counter.new({ from: web3.eth.accounts[0] }).then(
+  		function(instance) {
+  			counter = instance;
+
+  			counter.increment()
+  		}).then(
+  		function() {
+  			counter.set(0)
+  		}).then(
+  		function() {
+  			return counter.get.call()
+  		}).then(
+  		function(count) {
+  			assert.equal(count, 0, "Counter should have been reset to zero!");
   			done()
   		})
   });
