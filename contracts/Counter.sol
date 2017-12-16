@@ -20,19 +20,18 @@ contract Counter {
         _;
     } 
 
-    function set(uint value) onlyCreator public
-    {
-        counter = value;
-    }
-
     function get() public constant returns (uint)
     {
         return counter;
     }
 
-    function kill() public
+    function set(uint value) onlyCreator public
+    {
+        counter = value;
+    }
+
+    function kill() onlyCreator public
     { 
-        if (msg.sender == creator)
         selfdestruct(creator);  
     }
 }
